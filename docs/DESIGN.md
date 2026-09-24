@@ -41,6 +41,21 @@ Free 计划私有仓库额度约 **2000 分钟/月**。按这套矩阵估算一�
 
 而 Public 仓库的 Actions **完全免费、无分钟上限**。本方案就是把「计算」搬到 Public 仓库，「代码」留在私有仓库。
 
+<details>
+<summary>实测快照（2026-09-24，<code>gh</code> 采集）</summary>
+
+```
+edidada/cpp_ecshop   私有 🔒 · C++ · 8019 KB · 默认分支 main
+分支: crow / main / work
+自带 workflow: ci [active]、ci-http-servers [active]
+最近一次运行: ci #6 → failure @ 2026-09-19
+最近提交: 2b7790a Merge #9 into main from work
+```
+
+采集脚本：`bash scripts/collect-repo-info.sh edidada/cpp_ecshop out/`
+
+</details>仓库。
+
 ---
 
 ## 2. 架构：Driver / Source 分离
@@ -309,6 +324,8 @@ bash scripts/trigger.sh driver cpp_ecshop main auto auto
 | 归档步骤 push 失败 | 多副本同时写 `results/` 造成历史分叉 | 脚本已做 `pull --rebase` + 3 次重试；确认非主仓的 schedule 已被自动跳过 |
 | vcpkg 构建特别慢 | 每次都从源码编译 | 已启用 ccache；可进一步配 `VCPKG_BINARY_SOURCES=clear;files,<path>;readwrite` |
 | `bash: scripts/xxx.sh: No such file` | push 时文件可执行位丢失 | `git update-index --chmod=+x scripts/*.sh` |
+| `CONNECT tunnel failed, response 502` / `schannel: server closed abruptly` | 本机设了 `HTTPS_PROXY`，git 的 HTTPS 推流被代理拒绝 | 改用 SSH 推送，见 §12 |
+| `Permission denied (publickey)` | SSH 别名用错密钥 | `ssh -T git@<别名>` 看返回的 `Hi <账号>!` 对不对 |
 
 ---
 
@@ -326,6 +343,71 @@ gh run watch <run-id> --repo edidada/github_action_shell
 gh api repos/edidada/cpp_ecshop --jq '{private:.private, default_branch:.default_branch}'
 gh api users/edidada/settings/billing/actions --jq '.total_minutes_used'
 ```
+
+---
+
+## 12. 本机多账号推送（踩坑记录）
+
+实测环境：Windows + Git Bash，本机设了 `HTTPS_PROXY`、`~/.ssh` 里每个 GitHub 账号各有一把密钥。
+
+### 坑 1：HTTPS 推送走代理直接 502
+
+```bash
+git push https://github.com/wiseism/github_action_shell.git main
+# fatal: unable to access '...': CONNECT tunnel failed, response 502
+```
+
+git 会读取 `HTTPS_PROXY` 环境变量，代理不放行 github.com:443。而 `gh` CLI 不受影响，所以会出现「`gh repo view` 正常但 `git push` 失败」的诡异现象。
+
+### 解法：走 SSH 别名（443 端口）
+
+GitHub 提供 `ssh.github.com:443`，可以同时绕开 22 端口封锁和代理。`~/.ssh/config` 里给每个账号配一个 Host：
+
+```sshconfig
+Host wiseism126_github.com
+    User git
+    Hostname ssh.github.com     # ← 关键：443 端口的 SSH 入口
+    IdentityFile C:/Users/wdidada/.ssh/id_ed25519_wiseism126_github
+    Port 443
+    IdentitiesOnly yes
+```
+
+验证方式（`Hi` 后面的账号名必须与你预期的账号一致）：
+
+```bash
+ssh -T git@wiseism126_github.com
+# Hi wiseism! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+> ⚠️ 同一把 SSH 公钥不能重复添加到不同 GitHub 账号，会报 "Key is already in use"。
+> 多账号必须各自生成独立的密钥。
+
+### 坑 2：Windows 的 CRLF 会打死 Linux runner
+
+`core.autocrlf=true` 时，checkout 出来的 `.sh` 文件是 CRLF，在 Linux runner 上会报 `bad interpreter`。仓库里加了 `.gitattributes` 强制 LF：
+
+```gitattributes
+*.sh text eol=lf
+```
+
+### 坑 3：`git add --chmod=+x` 在 Windows 上不生效
+
+需要显式执行：
+
+```bash
+git update-index --chmod=+x scripts/*.sh
+```
+
+### 最终：一条命令推 4 个账号
+
+账号与 SSH 别名的对应关系写在 `config/accounts.env` 里（第二列）：
+
+```bash
+bash scripts/push-all-remotes.sh
+# ✓ edidada / edidadaoutlook / wiseism / wdidada126 全部完成
+```
+
+云端同步（`mirror.yml`）与本机无关，是主仓配了 `MIRROR_TOKEN` 后由 GitHub 自己执行的 HTTPS 推送，不受本机代理影响。
 
 ---
 
