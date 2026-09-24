@@ -103,9 +103,26 @@ jobs:
             ref="$(printf '%s' "$CLIENT_PAYLOAD" | jq -r '.source_ref // empty')"
           fi
           repo="${repo:-${SOURCE_REPO_FALLBACK}}"
+
+          # 配置映射（含 owner 级 overlay：config/sources.<owner>.env）
+          # 允许显式写 none / -，表示该账号下并不存在这个源仓库。
+          # 不写标记时若只注释掉那一行，下面的 cpp_ecshop 默认值仍会把 run 拉起来，
+          # 于是不存在的仓库照样会被 checkout 并报错 —— 所以必须支持显式禁用。
+          map_file="config/sources.${owner}.env"
+          [[ -f "$map_file" ]] || map_file="config/sources.env"
+          map_entry="$(grep -E "^${owner}=" "$map_file" | head -1 | cut -d= -f2 | tr -d ' ')"
+
+          no_source="false"
+          if [[ "$map_entry" == "none" || "$map_entry" == "-" ]]; then
+            no_source="true"
+          fi
+
           repo="${repo:-cpp_ecshop}"
 
-          ref="${ref:-$(grep -E "^${owner}=" config/sources.env | head -1 | cut -d= -f2 | tr -d ' ')}"
+          # 只有当配置里写了 @ref 时才提取 ref；否则 ref 会被错误地取成仓库名
+          ref_from_cfg=""
+          [[ "$map_entry" == *@* ]] && ref_from_cfg="${map_entry#*@}"
+          ref="${ref:-${ref_from_cfg}}"
           full="${owner}/${repo}"
 
           # 构建变体矩阵（允许多套 cmake 参数，例如 crow / httplib 两种后端）
@@ -118,7 +135,9 @@ jobs:
           # 当成布尔值与字符串做比较时触发隐式类型转换（1 == NaN -> false），
           # 用数字字符串可以彻底绕开这个坑。
           enabled=1; reason=""
-          if [[ "$has_token" != "true" ]]; then
+          if [[ "$no_source" == "true" ]]; then
+            enabled=0; reason="该账号在 ${map_file} 中标记为 none（账号下无此源仓库），跳过"
+          elif [[ "$has_token" != "true" ]]; then
             enabled=0; reason="未配置 secret SOURCE_REPO_TOKEN，跳过（每个账号需各自配置能读自己私有仓库的 PAT）"
           elif [[ "$EVENT_NAME" == "schedule" && "$is_primary" != "true" ]]; then
             enabled=0; reason="定时任务只在主账号仓库(${GAS_PRIMARY_OWNER})执行，镜像仓避免重复消耗"

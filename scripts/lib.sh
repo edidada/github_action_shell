@@ -106,11 +106,30 @@ mirror_accounts() {
 
 # 解析 owner=repo[@ref]
 # usage: resolve_source <owner>  ->  设置全局变量 GAS_SOURCE_REPO / GAS_SOURCE_REF / GAS_SOURCE_FULL
+#
+# 两级 lookup：账号私有 overlay 优先于共享基线。
+#   config/sources.<owner>.env   ← 只在该账号的 acct/<owner> 分支上维护
+#   config/sources.env           ← 共享基线，只在 main 上维护
+# 两者文件互不重叠，因此「main -> acct/*」合并时不会产生配置冲突。
+# 详见 docs/BRANCHING.md §5。
 resolve_source() {
   local owner="$1"
   local entry=""
-  entry="$(lookup "$owner" "${CONFIG_DIR}/sources.env" || true)"
+  local overlay="${CONFIG_DIR}/sources.${owner}.env"
+
+  [[ -f "$overlay" ]] && entry="$(lookup "$owner" "$overlay" || true)"
+  [[ -z "$entry" ]] && entry="$(lookup "$owner" "${CONFIG_DIR}/sources.env" || true)"
   entry="${entry:-${GAS_SOURCE_REPO_DEFAULT:-cpp_ecshop}}"
+
+  # 显式禁用标记：<owner>=none / <owner>=-
+  # 该账号下并不存在这个源仓库，返回非零让调用方跳过。
+  # 注意不能简单地「删掉那一行」——没有匹配时会回退到上面的默认值，
+  # runner 照样会去 checkout 一个不存在的仓库。
+  if [[ "$entry" == "none" || "$entry" == "-" ]]; then
+    GAS_SOURCE_REPO=""; GAS_SOURCE_REF=""; GAS_SOURCE_FULL=""
+    export GAS_SOURCE_REPO GAS_SOURCE_REF GAS_SOURCE_FULL
+    return 1
+  fi
 
   GAS_SOURCE_REPO="${entry%%@*}"
   GAS_SOURCE_REF="${entry#*@}"

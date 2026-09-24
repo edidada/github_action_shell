@@ -5,6 +5,7 @@
 私有仓库 `edidada/cpp_ecshop`（C++ / CMake / vcpkg）的 GitHub Actions 分钟已耗尽（原 CI 是 macOS + Ubuntu + Windows × crow/httplib 六矩阵，macOS 按 10 倍计费）。本仓库把「算力」搬到 public 仓库（免费无限），把「代码」留在私有仓库。
 
 📄 **[完整设计方案见 docs/DESIGN.md](docs/DESIGN.md)**
+📄 **[分支策略见 docs/BRANCHING.md](docs/BRANCHING.md)** · **[仓库台账见 docs/REPO-MATRIX.md](docs/REPO-MATRIX.md)**
 
 ```
 PRIVATE cpp_ecshop  ──(只读 PAT)──▶  PUBLIC github_action_shell
@@ -44,6 +45,29 @@ bash scripts/trigger.sh driver cpp_ecshop main
 - `wiseism` 的 driver → 拉 `wiseism/cpp_ecshop`
 
 同名但不同用途的仓库因此天然隔离。要改映射关系，编辑 `config/sources.env`。
+
+### 分支策略
+
+4 个账号下的同名仓库**互不 fork**，当前共用一条 `main` 强推同步 —— 一旦某份副本要做不同的事，
+下一次同步就会被覆盖。因此采用两层分支：
+
+```
+main                     公共引擎基线（driver / scripts / docs）
+ ├── acct/edidada        各账号长期分支，设为该仓库的 default branch
+ ├── acct/edidadaoutlook
+ ├── acct/wiseism
+ └── acct/wdidada126
+```
+
+GitHub Actions 只跑 default branch 上的 workflow，所以切换 default branch 后用途隔离自动生效。
+
+```bash
+bash scripts/sync-branches.sh --init         # 创建 4 条 acct 分支
+bash scripts/sync-branches.sh --set-default  # 各仓库切到自己的 default branch
+bash scripts/sync-branches.sh                # 日常：main -> acct/*（merge）
+```
+
+📄 **[完整策略见 docs/BRANCHING.md](docs/BRANCHING.md)** · **[仓库台账见 docs/REPO-MATRIX.md](docs/REPO-MATRIX.md)**
 
 ## Secrets / Variables
 
