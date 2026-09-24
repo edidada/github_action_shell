@@ -8,6 +8,9 @@ tmp/
 __pycache__/
 *.pyc
 
+# 备份报告（含账号仓库清单，属本地产物，不进 public 仓库）
+reports/
+
 # 编辑器 / 系统
 .vscode/
 .idea/
