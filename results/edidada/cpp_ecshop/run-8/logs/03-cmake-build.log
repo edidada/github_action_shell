@@ -1,0 +1,44 @@
+[  3%] Building CXX object CMakeFiles/ecshop_core.dir/src/api/GoodsApi.cpp.o
+[  6%] Building CXX object CMakeFiles/ecshop_core.dir/src/application/GetGoodsUseCase.cpp.o
+[ 10%] Building CXX object CMakeFiles/ecshop_core.dir/src/api/HomeApi.cpp.o
+[ 13%] Building CXX object CMakeFiles/ecshop_core.dir/src/application/GetHomeUseCase.cpp.o
+[ 17%] Building CXX object CMakeFiles/ecshop_core.dir/src/application/ListCategoryGoodsUseCase.cpp.o
+[ 20%] Building CXX object CMakeFiles/ecshop_core.dir/src/infrastructure/InMemoryGoodsRepository.cpp.o
+[ 24%] Building CXX object CMakeFiles/ecshop_core.dir/src/infrastructure/sqlite/SqliteDatabase.cpp.o
+[ 31%] Building CXX object CMakeFiles/ecshop_core.dir/src/infrastructure/sqlite/SqliteGoodsRepository.cpp.o
+[ 34%] Building CXX object CMakeFiles/ecshop_core.dir/src/infrastructure/mysql/MysqlGoodsRepository.cpp.o
+[ 37%] Building CXX object CMakeFiles/ecshop_core.dir/src/shared/FileLogger.cpp.o
+[ 37%] Building CXX object CMakeFiles/ecshop_core.dir/src/infrastructure/mysql/MysqlDatabase.cpp.o
+/home/runner/work/github_action_shell/github_action_shell/source/src/infrastructure/mysql/MysqlGoodsRepository.cpp:53:6: warning: ‘void ecshop::infrastructure::mysql::{anonymous}::bindParamInt32(BindBuffer&, std::size_t, int)’ defined but not used [-Wunused-function]
+   53 | void bindParamInt32(BindBuffer& buf, std::size_t i, int value) {
+      |      ^~~~~~~~~~~~~~
+/home/runner/work/github_action_shell/github_action_shell/source/src/infrastructure/mysql/MysqlGoodsRepository.cpp:45:6: warning: ‘void ecshop::infrastructure::mysql::{anonymous}::bindParamInt64(BindBuffer&, std::size_t, long long int)’ defined but not used [-Wunused-function]
+   45 | void bindParamInt64(BindBuffer& buf, std::size_t i, long long value) {
+      |      ^~~~~~~~~~~~~~
+[ 41%] Linking CXX static library libecshop_core.a
+[ 41%] Built target ecshop_core
+[ 44%] Building CXX object CMakeFiles/ecshop_http_health.dir/src/http/crow/health/Routes.cpp.o
+[ 48%] Building CXX object CMakeFiles/ecshop_http_goods.dir/src/http/crow/goods/Routes.cpp.o
+[ 51%] Building CXX object CMakeFiles/ecshop_http_categories.dir/src/http/crow/categories/Routes.cpp.o
+[ 55%] Building CXX object CMakeFiles/ecshop_http_home.dir/src/http/crow/home/Routes.cpp.o
+[ 58%] Building CXX object CMakeFiles/get_goods_use_case_test.dir/tests/GetGoodsUseCaseTest.cpp.o
+[ 62%] Building CXX object CMakeFiles/goods_api_test.dir/tests/GoodsApiTest.cpp.o
+[ 65%] Linking CXX executable get_goods_use_case_test
+[ 65%] Built target get_goods_use_case_test
+[ 68%] Linking CXX executable goods_api_test
+[ 68%] Built target goods_api_test
+[ 72%] Linking CXX static library libecshop_http_categories.a
+[ 75%] Linking CXX static library libecshop_http_home.a
+[ 79%] Linking CXX static library libecshop_http_goods.a
+[ 79%] Built target ecshop_http_categories
+[ 82%] Linking CXX static library libecshop_http_health.a
+[ 82%] Built target ecshop_http_goods
+[ 82%] Built target ecshop_http_home
+[ 82%] Built target ecshop_http_health
+[ 86%] Building CXX object CMakeFiles/ecshop_http.dir/src/http/crow/HttpServer.cpp.o
+[ 89%] Linking CXX static library libecshop_http.a
+[ 89%] Built target ecshop_http
+[ 96%] Building CXX object CMakeFiles/ecshop_api.dir/src/app/main.cpp.o
+[ 96%] Building CXX object CMakeFiles/ecshop_api.dir/src/app/AppConfig.cpp.o
+[100%] Linking CXX executable ecshop_api
+[100%] Built target ecshop_api

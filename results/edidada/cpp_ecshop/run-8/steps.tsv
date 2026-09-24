@@ -1,0 +1,4 @@
+vcpkg bootstrap	ok	0	0m00s	01-vcpkg-bootstrap.log
+cmake configure	ok	0	4m16s	02-cmake-configure.log
+cmake build	ok	0	0m25s	03-cmake-build.log
+ctest	ok	0	0m01s	04-ctest.log
