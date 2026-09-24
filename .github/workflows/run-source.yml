@@ -182,7 +182,9 @@ jobs:
         with:
           repository: microsoft/vcpkg
           path: source/.vcpkg
-          fetch-depth: 1
+          # 必须完整克隆：vcpkg.json 里的 builtin-baseline 指向某个历史 commit，
+          # 浅克隆(fetch-depth:1)会报 "versions/baseline.json exists on disk, but not in <commit>"
+          fetch-depth: 0
 
       - name: ccache 缓存
         uses: actions/cache@v4
