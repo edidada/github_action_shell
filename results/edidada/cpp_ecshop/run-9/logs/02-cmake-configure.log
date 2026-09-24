@@ -1,0 +1,429 @@
+-- Running vcpkg install
+A suitable version of cmake was not found (required v4.4.3).
+Downloading https://github.com/Kitware/CMake/releases/download/v4.4.3/cmake-4.4.3-linux-x86_64.tar.gz -> cmake-4.4.3-linux-x86_64.tar.gz
+Successfully downloaded cmake-4.4.3-linux-x86_64.tar.gz
+Extracting cmake...
+Detecting compiler hash for triplet x64-linux...
+Compiler found: /usr/bin/c++
+The following packages will be built and installed:
+  * asio:x64-linux@1.32.0
+    catch2:x64-linux@3.8.0
+    cpp-httplib:x64-linux@0.20.0#1
+    crow:x64-linux@1.2.1.2
+  * date:x64-linux@3.0.3
+  * fmt:x64-linux@11.0.2#1
+  * libmariadb[core,openssl,ssl]:x64-linux@3.4.1
+    nlohmann-json:x64-linux@3.11.3#1
+  * openssl:x64-linux@3.5.0
+    spdlog:x64-linux@1.15.2
+    sqlite3[core,json1]:x64-linux@3.49.1
+    sqlpp11[core,mariadb,sqlite3]:x64-linux@0.64#3
+    sqlpp11-connector-mysql[core,mariadb]:x64-linux@0.61
+    sqlpp11-connector-sqlite3:x64-linux@0.61
+  * vcpkg-cmake:x64-linux@2024-04-23
+  * vcpkg-cmake-config:x64-linux@2024-05-23
+  * vcpkg-cmake-get-vars:x64-linux@2024-09-22
+  * zlib:x64-linux@1.3.1
+Additional packages (*) will be modified to complete this operation.
+Restored 0 package(s) from /home/runner/.cache/vcpkg/archives in 44.7 us. Use --debug to see more details.
+Installing 1/18 vcpkg-cmake-config:x64-linux@2024-05-23...
+vcpkg-cmake-config:x64-linux@2024-05-23 package ABI: 9602f1e4dbf04813d6074668438292af30150895ae61d2c409ac44d3636e7a36
+Building vcpkg-cmake-config:x64-linux@2024-05-23...
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/vcpkg-cmake-config_x64-linux/share/vcpkg-cmake-config/vcpkg_cmake_config_fixup.cmake
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/vcpkg-cmake-config_x64-linux/share/vcpkg-cmake-config/vcpkg-port-config.cmake
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/vcpkg-cmake-config_x64-linux/share/vcpkg-cmake-config/copyright
+-- Skipping post-build validation due to VCPKG_POLICY_EMPTY_PACKAGE
+Starting submission of vcpkg-cmake-config:x64-linux@2024-05-23 to 1 binary cache(s) in the background
+Elapsed time to handle vcpkg-cmake-config:x64-linux: 18.5 ms
+Installing 2/18 vcpkg-cmake:x64-linux@2024-04-23...
+vcpkg-cmake:x64-linux@2024-04-23 package ABI: fd03e5f87f10ffa557dd9c301fa24001b072d9d4674d69587a386868aea751f2
+Building vcpkg-cmake:x64-linux@2024-04-23...
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/vcpkg-cmake_x64-linux/share/vcpkg-cmake/vcpkg_cmake_configure.cmake
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/vcpkg-cmake_x64-linux/share/vcpkg-cmake/vcpkg_cmake_build.cmake
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/vcpkg-cmake_x64-linux/share/vcpkg-cmake/vcpkg_cmake_install.cmake
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/vcpkg-cmake_x64-linux/share/vcpkg-cmake/vcpkg-port-config.cmake
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/vcpkg-cmake_x64-linux/share/vcpkg-cmake/copyright
+-- Performing post-build validation
+Starting submission of vcpkg-cmake:x64-linux@2024-04-23 to 1 binary cache(s) in the background
+Elapsed time to handle vcpkg-cmake:x64-linux: 19.3 ms
+Completed submission of vcpkg-cmake-config:x64-linux@2024-05-23 to 1 binary cache(s) in 3.33 ms
+Installing 3/18 catch2:x64-linux@3.8.0...
+catch2:x64-linux@3.8.0 package ABI: 7e54e1a924d34685b2f31f64f482b039495a7319764acb0b375405e2713ef9a3
+Building catch2:x64-linux@3.8.0...
+Downloading https://github.com/catchorg/Catch2/archive/v3.8.0.tar.gz -> catchorg-Catch2-v3.8.0.tar.gz
+Successfully downloaded catchorg-Catch2-v3.8.0.tar.gz
+-- Extracting source /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/downloads/catchorg-Catch2-v3.8.0.tar.gz
+-- Applying patch fix-install-path.patch
+-- Using source at /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/buildtrees/catch2/src/v3.8.0-2a3c089487.clean
+-- Configuring x64-linux
+-- Building x64-linux-dbg
+-- Building x64-linux-rel
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/catch2_x64-linux/lib/pkgconfig/catch2-with-main.pc
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/catch2_x64-linux/lib/pkgconfig/catch2.pc
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/catch2_x64-linux/debug/lib/pkgconfig/catch2-with-main.pc
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/catch2_x64-linux/debug/lib/pkgconfig/catch2.pc
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/catch2_x64-linux/share/catch2/copyright
+-- Performing post-build validation
+Starting submission of catch2:x64-linux@3.8.0 to 1 binary cache(s) in the background
+Elapsed time to handle catch2:x64-linux: 42 s
+Completed submission of vcpkg-cmake:x64-linux@2024-04-23 to 1 binary cache(s) in 3.06 ms
+Installing 4/18 cpp-httplib:x64-linux@0.20.0#1...
+cpp-httplib:x64-linux@0.20.0#1 package ABI: 44ec6224d4a09c024daa699b2c12ce7b3c271cfdef1e04cbb7bfe931fb77ab4a
+Building cpp-httplib:x64-linux@0.20.0#1...
+Downloading https://github.com/yhirose/cpp-httplib/archive/v0.20.0.tar.gz -> yhirose-cpp-httplib-v0.20.0.tar.gz
+Successfully downloaded yhirose-cpp-httplib-v0.20.0.tar.gz
+-- Extracting source /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/downloads/yhirose-cpp-httplib-v0.20.0.tar.gz
+-- Applying patch fix-find-brotli.patch
+-- Using source at /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/buildtrees/cpp-httplib/src/v0.20.0-734454df38.clean
+-- Configuring x64-linux
+-- Building x64-linux-rel
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/cpp-httplib_x64-linux/share/cpp-httplib/copyright
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/cpp-httplib_x64-linux/share/cpp-httplib/usage
+-- Performing post-build validation
+Starting submission of cpp-httplib:x64-linux@0.20.0#1 to 1 binary cache(s) in the background
+Elapsed time to handle cpp-httplib:x64-linux: 996 ms
+Installing 5/18 asio:x64-linux@1.32.0...
+asio:x64-linux@1.32.0 package ABI: 969a087e16edcee307442d7ac539d322769178b794877333209024ab5a9961f8
+Building asio:x64-linux@1.32.0...
+Downloading https://github.com/chriskohlhoff/asio/archive/asio-1-32-0.tar.gz -> chriskohlhoff-asio-asio-1-32-0.tar.gz
+Successfully downloaded chriskohlhoff-asio-asio-1-32-0.tar.gz
+-- Extracting source /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/downloads/chriskohlhoff-asio-asio-1-32-0.tar.gz
+-- Using source at /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/buildtrees/asio/src/sio-1-32-0-e4cfb7a1b9.clean
+-- Configuring x64-linux
+-- Building x64-linux-rel
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/asio_x64-linux/share/pkgconfig/asio.pc
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/asio_x64-linux/share/asio/asio-config.cmake
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/asio_x64-linux/share/asio/copyright
+-- Performing post-build validation
+Starting submission of asio:x64-linux@1.32.0 to 1 binary cache(s) in the background
+Elapsed time to handle asio:x64-linux: 1.3 s
+Completed submission of catch2:x64-linux@3.8.0 to 1 binary cache(s) in 1.4 s
+Completed submission of cpp-httplib:x64-linux@0.20.0#1 to 1 binary cache(s) in 16.2 ms
+Installing 6/18 crow:x64-linux@1.2.1.2...
+crow:x64-linux@1.2.1.2 package ABI: 7354fa9855a3d71e8b5faf2d3af845630b02ecc6d5ed834d13fb1b473b5512e3
+Building crow:x64-linux@1.2.1.2...
+Downloading https://github.com/CrowCpp/crow/archive/v1.2.1.2.tar.gz -> CrowCpp-crow-v1.2.1.2.tar.gz
+Successfully downloaded CrowCpp-crow-v1.2.1.2.tar.gz
+-- Extracting source /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/downloads/CrowCpp-crow-v1.2.1.2.tar.gz
+-- Using source at /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/buildtrees/crow/src/v1.2.1.2-6dac2219ba.clean
+-- Configuring x64-linux
+-- Building x64-linux-dbg
+-- Building x64-linux-rel
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/crow_x64-linux/share/crow/copyright
+-- Performing post-build validation
+Starting submission of crow:x64-linux@1.2.1.2 to 1 binary cache(s) in the background
+Elapsed time to handle crow:x64-linux: 1.8 s
+Completed submission of asio:x64-linux@1.32.0 to 1 binary cache(s) in 124 ms
+Installing 7/18 nlohmann-json:x64-linux@3.11.3#1...
+nlohmann-json:x64-linux@3.11.3#1 package ABI: d93b674428f484d25330cd4af14d35ea5e6c11a5a32a15368c4cceb80a144f12
+Building nlohmann-json:x64-linux@3.11.3#1...
+Downloading https://github.com/nlohmann/json/archive/v3.11.3.tar.gz -> nlohmann-json-v3.11.3.tar.gz
+Successfully downloaded nlohmann-json-v3.11.3.tar.gz
+-- Extracting source /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/downloads/nlohmann-json-v3.11.3.tar.gz
+-- Using source at /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/buildtrees/nlohmann-json/src/v3.11.3-434e7fbc3e.clean
+-- Configuring x64-linux
+-- Building x64-linux-dbg
+-- Building x64-linux-rel
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/nlohmann-json_x64-linux/share/pkgconfig/nlohmann_json.pc
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/nlohmann-json_x64-linux/debug/share/pkgconfig/nlohmann_json.pc
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/nlohmann-json_x64-linux/share/nlohmann-json/copyright
+-- Performing post-build validation
+Starting submission of nlohmann-json:x64-linux@3.11.3#1 to 1 binary cache(s) in the background
+Elapsed time to handle nlohmann-json:x64-linux: 969 ms
+Completed submission of crow:x64-linux@1.2.1.2 to 1 binary cache(s) in 16.2 ms
+Installing 8/18 fmt:x64-linux@11.0.2#1...
+fmt:x64-linux@11.0.2#1 package ABI: 194242f1084604f29fbe05ba07d16fe96d3c534dc5b01f8b0414ff85bae33f8b
+Building fmt:x64-linux@11.0.2#1...
+Downloading https://github.com/fmtlib/fmt/archive/11.0.2.tar.gz -> fmtlib-fmt-11.0.2.tar.gz
+Successfully downloaded fmtlib-fmt-11.0.2.tar.gz
+-- Extracting source /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/downloads/fmtlib-fmt-11.0.2.tar.gz
+-- Applying patch fix-write-batch.patch
+-- Applying patch fix-pass-utf-8-only-if-the-compiler-is-MSVC-at-build.patch
+-- Using source at /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/buildtrees/fmt/src/11.0.2-c30c0a133f.clean
+-- Configuring x64-linux
+-- Building x64-linux-dbg
+-- Building x64-linux-rel
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/fmt_x64-linux/lib/pkgconfig/fmt.pc
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/fmt_x64-linux/debug/lib/pkgconfig/fmt.pc
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/fmt_x64-linux/share/fmt/usage
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/fmt_x64-linux/share/fmt/copyright
+-- Performing post-build validation
+Starting submission of fmt:x64-linux@11.0.2#1 to 1 binary cache(s) in the background
+Elapsed time to handle fmt:x64-linux: 5.9 s
+Completed submission of nlohmann-json:x64-linux@3.11.3#1 to 1 binary cache(s) in 25 ms
+Installing 9/18 spdlog:x64-linux@1.15.2...
+spdlog:x64-linux@1.15.2 package ABI: 36f914836ea6e0261f3b2dc74ccd4f4633e02bd902fe96e33d941af225361ffb
+Building spdlog:x64-linux@1.15.2...
+Downloading https://github.com/gabime/spdlog/archive/v1.15.2.tar.gz -> gabime-spdlog-v1.15.2.tar.gz
+Successfully downloaded gabime-spdlog-v1.15.2.tar.gz
+-- Extracting source /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/downloads/gabime-spdlog-v1.15.2.tar.gz
+-- Using source at /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/buildtrees/spdlog/src/v1.15.2-30717e888b.clean
+-- Configuring x64-linux
+-- Building x64-linux-dbg
+-- Building x64-linux-rel
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/spdlog_x64-linux/lib/pkgconfig/spdlog.pc
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/spdlog_x64-linux/debug/lib/pkgconfig/spdlog.pc
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/spdlog_x64-linux/share/spdlog/usage
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/spdlog_x64-linux/share/spdlog/copyright
+-- Performing post-build validation
+Starting submission of spdlog:x64-linux@1.15.2 to 1 binary cache(s) in the background
+Elapsed time to handle spdlog:x64-linux: 13 s
+Completed submission of fmt:x64-linux@11.0.2#1 to 1 binary cache(s) in 107 ms
+Installing 10/18 sqlite3[core,json1]:x64-linux@3.49.1...
+sqlite3[core,json1]:x64-linux@3.49.1 package ABI: 75c2f0fe5556272e1eac11b56f6441a79f36d2efc34b2d507a8e85ee50f85438
+Building sqlite3[core,json1]:x64-linux@3.49.1...
+Downloading https://sqlite.org/2025/sqlite-autoconf-3490100.tar.gz -> sqlite-autoconf-3490100.zip
+Successfully downloaded sqlite-autoconf-3490100.zip
+-- Extracting source /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/downloads/sqlite-autoconf-3490100.zip
+-- Applying patch fix-arm-uwp.patch
+-- Applying patch add-config-include.patch
+-- Using source at /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/buildtrees/sqlite3/src/nf-3490100-02e836121d.clean
+-- Configuring x64-linux
+-- Building x64-linux-dbg
+-- Building x64-linux-rel
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/sqlite3_x64-linux/lib/pkgconfig/sqlite3.pc
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/sqlite3_x64-linux/debug/lib/pkgconfig/sqlite3.pc
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/sqlite3_x64-linux/share/sqlite3/usage
+-- Performing post-build validation
+Starting submission of sqlite3[core,json1]:x64-linux@3.49.1 to 1 binary cache(s) in the background
+Elapsed time to handle sqlite3:x64-linux: 37 s
+Completed submission of spdlog:x64-linux@1.15.2 to 1 binary cache(s) in 496 ms
+Installing 11/18 vcpkg-cmake-get-vars:x64-linux@2024-09-22...
+vcpkg-cmake-get-vars:x64-linux@2024-09-22 package ABI: ea5bec53e77b9bc39c922f4d193ece7950ffa7f2239b9d48d3f509dd2674eabc
+Building vcpkg-cmake-get-vars:x64-linux@2024-09-22...
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/vcpkg-cmake-get-vars_x64-linux/share/vcpkg-cmake-get-vars/vcpkg_cmake_get_vars.cmake
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/vcpkg-cmake-get-vars_x64-linux/share/vcpkg-cmake-get-vars/cmake_get_vars
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/vcpkg-cmake-get-vars_x64-linux/share/vcpkg-cmake-get-vars/cmake_get_vars/CMakeLists.txt
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/vcpkg-cmake-get-vars_x64-linux/share/vcpkg-cmake-get-vars/vcpkg-port-config.cmake
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/vcpkg-cmake-get-vars_x64-linux/share/vcpkg-cmake-get-vars/copyright
+-- Performing post-build validation
+Starting submission of vcpkg-cmake-get-vars:x64-linux@2024-09-22 to 1 binary cache(s) in the background
+Elapsed time to handle vcpkg-cmake-get-vars:x64-linux: 23 ms
+Installing 12/18 openssl:x64-linux@3.5.0...
+openssl:x64-linux@3.5.0 package ABI: 2e6e1b4053f4860d67ed5fbcdcb639498d26e588289dc4124be36729432fe48d
+Building openssl:x64-linux@3.5.0...
+Downloading https://github.com/openssl/openssl/archive/openssl-3.5.0.tar.gz -> openssl-openssl-openssl-3.5.0.tar.gz
+Successfully downloaded openssl-openssl-openssl-3.5.0.tar.gz
+-- Extracting source /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/downloads/openssl-openssl-openssl-3.5.0.tar.gz
+-- Applying patch cmake-config.patch
+-- Applying patch command-line-length.patch
+-- Applying patch script-prefix.patch
+-- Applying patch windows/install-layout.patch
+-- Applying patch windows/install-pdbs.patch
+-- Applying patch unix/android-cc.patch
+-- Applying patch unix/move-openssldir.patch
+-- Applying patch unix/no-empty-dirs.patch
+-- Applying patch unix/no-static-libs-for-shared.patch
+-- Using source at /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/buildtrees/openssl/src/nssl-3.5.0-b8228451bd.clean
+openssl requires Linux kernel headers from the system package manager.
+   They can be installed on Alpine systems via `apk add linux-headers`.
+   They can be installed on Ubuntu systems via `apt install linux-libc-dev`.
+
+-- Getting CMake variables for x64-linux
+-- Getting CMake variables for x64-linux-dbg
+-- Getting CMake variables for x64-linux-rel
+-- Configuring x64-linux-dbg
+-- Configuring x64-linux-rel
+-- Building x64-linux-dbg
+-- Installing x64-linux-dbg
+-- Building x64-linux-rel
+-- Installing x64-linux-rel
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/openssl_x64-linux/lib/pkgconfig/libcrypto.pc
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/openssl_x64-linux/lib/pkgconfig/libssl.pc
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/openssl_x64-linux/lib/pkgconfig/openssl.pc
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/openssl_x64-linux/debug/lib/pkgconfig/libcrypto.pc
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/openssl_x64-linux/debug/lib/pkgconfig/libssl.pc
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/openssl_x64-linux/debug/lib/pkgconfig/openssl.pc
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/openssl_x64-linux/share/openssl/usage
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/openssl_x64-linux/share/openssl/copyright
+-- Performing post-build validation
+Starting submission of openssl:x64-linux@3.5.0 to 1 binary cache(s) in the background
+Elapsed time to handle openssl:x64-linux: 2 min
+Completed submission of sqlite3[core,json1]:x64-linux@3.49.1 to 1 binary cache(s) in 389 ms
+Completed submission of vcpkg-cmake-get-vars:x64-linux@2024-09-22 to 1 binary cache(s) in 3.14 ms
+Installing 13/18 zlib:x64-linux@1.3.1...
+zlib:x64-linux@1.3.1 package ABI: 934dd7e9c452e323e58eabcb0c07f56c14491d52633c447e27067718828b9741
+Building zlib:x64-linux@1.3.1...
+Downloading https://github.com/madler/zlib/archive/v1.3.1.tar.gz -> madler-zlib-v1.3.1.tar.gz
+Successfully downloaded madler-zlib-v1.3.1.tar.gz
+-- Extracting source /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/downloads/madler-zlib-v1.3.1.tar.gz
+-- Applying patch 0001-Prevent-invalid-inclusions-when-HAVE_-is-set-to-0.patch
+-- Applying patch 0002-build-static-or-shared-not-both.patch
+-- Applying patch 0003-android-and-mingw-fixes.patch
+-- Using source at /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/buildtrees/zlib/src/v1.3.1-2e5db616bf.clean
+-- Configuring x64-linux
+-- Building x64-linux-dbg
+-- Building x64-linux-rel
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/zlib_x64-linux/share/zlib/vcpkg-cmake-wrapper.cmake
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/zlib_x64-linux/lib/pkgconfig/zlib.pc
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/zlib_x64-linux/debug/lib/pkgconfig/zlib.pc
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/zlib_x64-linux/share/zlib/copyright
+-- Performing post-build validation
+Starting submission of zlib:x64-linux@1.3.1 to 1 binary cache(s) in the background
+Elapsed time to handle zlib:x64-linux: 2.7 s
+Installing 14/18 libmariadb[core,openssl,ssl]:x64-linux@3.4.1...
+libmariadb[core,openssl,ssl]:x64-linux@3.4.1 package ABI: 845b6d56271d0cfcacb4bbe7aeb97a3d91edd2c47a6eb05b54fb3617129a0916
+Building libmariadb[core,openssl,ssl]:x64-linux@3.4.1...
+Downloading https://github.com/mariadb-corporation/mariadb-connector-c/archive/v3.4.1.tar.gz -> mariadb-corporation-mariadb-connector-c-v3.4.1.tar.gz
+Successfully downloaded mariadb-corporation-mariadb-connector-c-v3.4.1.tar.gz
+-- Extracting source /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/downloads/mariadb-corporation-mariadb-connector-c-v3.4.1.tar.gz
+-- Applying patch compiler-flags.diff
+-- Applying patch dependencies.diff
+-- Applying patch disable-mariadb_config.diff
+-- Applying patch library-linkage.diff
+-- Applying patch cmake-export.diff
+-- Applying patch no-abs-path.diff
+-- Applying patch ushort-check.diff
+-- Using source at /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/buildtrees/libmariadb/src/v3.4.1-3a966c3287.clean
+-- Configuring x64-linux
+-- Building x64-linux-dbg
+-- Building x64-linux-rel
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/libmariadb_x64-linux/lib/pkgconfig/libmariadb.pc
+-- Fixing pkgconfig file: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/libmariadb_x64-linux/debug/lib/pkgconfig/libmariadb.pc
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/libmariadb_x64-linux/share/libmariadb/copyright
+-- Adjusted RPATH of '/home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/libmariadb_x64-linux/debug/plugins/libmariadb/client_ed25519.so' (From '' -> To '$ORIGIN:$ORIGIN/../../lib')
+-- Adjusted RPATH of '/home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/libmariadb_x64-linux/plugins/libmariadb/client_ed25519.so' (From '' -> To '$ORIGIN:$ORIGIN/../../lib')
+-- Performing post-build validation
+Starting submission of libmariadb[core,openssl,ssl]:x64-linux@3.4.1 to 1 binary cache(s) in the background
+Elapsed time to handle libmariadb:x64-linux: 11 s
+Completed submission of openssl:x64-linux@3.5.0 to 1 binary cache(s) in 3 s
+Completed submission of zlib:x64-linux@1.3.1 to 1 binary cache(s) in 34 ms
+Installing 15/18 date:x64-linux@3.0.3...
+date:x64-linux@3.0.3 package ABI: 2833a5558a366247354d687e685e9487afc4f4dc89dda2cd6e0a7ab9b86afaf4
+Building date:x64-linux@3.0.3...
+Downloading https://github.com/HowardHinnant/date/archive/v3.0.3.tar.gz -> HowardHinnant-date-v3.0.3.tar.gz
+Successfully downloaded HowardHinnant-date-v3.0.3.tar.gz
+-- Extracting source /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/downloads/HowardHinnant-date-v3.0.3.tar.gz
+-- Using source at /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/buildtrees/date/src/v3.0.3-4b8f3a2a18.clean
+-- Configuring x64-linux
+-- Building x64-linux-dbg
+-- Building x64-linux-rel
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/date_x64-linux/share/date/copyright
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/date_x64-linux/share/date/usage
+-- Performing post-build validation
+Starting submission of date:x64-linux@3.0.3 to 1 binary cache(s) in the background
+Elapsed time to handle date:x64-linux: 5.2 s
+Completed submission of libmariadb[core,openssl,ssl]:x64-linux@3.4.1 to 1 binary cache(s) in 1.3 s
+Installing 16/18 sqlpp11[core,mariadb,sqlite3]:x64-linux@0.64#3...
+sqlpp11[core,mariadb,sqlite3]:x64-linux@0.64#3 package ABI: 899506729401d2ae802f638bcb5a8a6ebb6ed12da843dc47952b15d6eadf5c61
+Building sqlpp11[core,mariadb,sqlite3]:x64-linux@0.64#3...
+Downloading https://github.com/rbock/sqlpp11/archive/0.64.tar.gz -> rbock-sqlpp11-0.64.tar.gz
+Successfully downloaded rbock-sqlpp11-0.64.tar.gz
+-- Extracting source /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/downloads/rbock-sqlpp11-0.64.tar.gz
+-- Applying patch ddl2cpp_path.patch
+-- Applying patch dependencies.diff
+-- Applying patch fix-miss-header.patch
+-- Using source at /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/buildtrees/sqlpp11/src/0.64-561d0ab82e.clean
+-- Configuring x64-linux
+-- Building x64-linux-rel
+-- Installing: /home/runner/work/github_action_shell/github_action_shell/source/.vcpkg/packages/sqlpp11_x64-linux/share/sqlpp11/copyright
+-- Performing post-build validation
+Starting submission of sqlpp11[core,mariadb,sqlite3]:x64-linux@0.64#3 to 1 binary cache(s) in the background
+Elapsed time to handle sqlpp11:x64-linux: 937 ms
+Completed submission of date:x64-linux@3.0.3 to 1 binary cache(s) in 86.1 ms
+Installing 17/18 sqlpp11-connector-mysql[core,mariadb]:x64-linux@0.61...
+sqlpp11-connector-mysql[core,mariadb]:x64-linux@0.61 package ABI: 391dedfbe701beac393506271466433c9fd2062da33dfc3c961b69315568f3f2
+Building sqlpp11-connector-mysql[core,mariadb]:x64-linux@0.61...
+-- Skipping post-build validation due to VCPKG_POLICY_EMPTY_PACKAGE
+Starting submission of sqlpp11-connector-mysql[core,mariadb]:x64-linux@0.61 to 1 binary cache(s) in the background
+Elapsed time to handle sqlpp11-connector-mysql:x64-linux: 20 ms
+Installing 18/18 sqlpp11-connector-sqlite3:x64-linux@0.61...
+sqlpp11-connector-sqlite3:x64-linux@0.61 package ABI: 103b27bd803b22592ba607f4950b7fce103863e5e3450ccfa0279f9330756ba3
+Building sqlpp11-connector-sqlite3:x64-linux@0.61...
+-- Skipping post-build validation due to VCPKG_POLICY_EMPTY_PACKAGE
+Starting submission of sqlpp11-connector-sqlite3:x64-linux@0.61 to 1 binary cache(s) in the background
+Elapsed time to handle sqlpp11-connector-sqlite3:x64-linux: 19.7 ms
+Installed contents are licensed to you by owners. Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.
+Packages installed in this vcpkg installation declare the following licenses:
+Apache-2.0
+BSD-2-Clause
+BSD-3-Clause
+BSL-1.0
+LGPL-2.1-or-later
+MIT
+Zlib
+blessing
+catch2 provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(Catch2 CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Catch2::Catch2 Catch2::Catch2WithMain)
+
+catch2 provides pkg-config modules:
+
+  # A modern, C++-native test framework for C++14 and above (links in default main)
+  catch2-with-main
+
+  # A modern, C++-native, test framework for C++14 and above
+  catch2
+
+cpp-httplib provides CMake targets:
+
+    find_package(httplib CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE httplib::httplib)
+
+crow provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(Crow CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Crow::Crow asio::asio)
+
+The package nlohmann-json provides CMake targets:
+
+    find_package(nlohmann_json CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json)
+
+The package nlohmann-json can be configured to not provide implicit conversions via a custom triplet file:
+
+    set(nlohmann-json_IMPLICIT_CONVERSIONS OFF)
+
+For more information, see the docs here:
+    
+    https://json.nlohmann.me/api/macros/json_use_implicit_conversions/
+
+The package spdlog provides CMake targets:
+
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog)
+
+    # Or use the header-only version
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog_header_only)
+
+sqlite3 provides pkgconfig bindings.
+sqlite3 provides CMake targets:
+
+    find_package(unofficial-sqlite3 CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE unofficial::sqlite3::sqlite3)
+
+sqlpp11 provides CMake targets:
+
+  find_package(Sqlpp11 CONFIG REQUIRED COMPONENTS SQLite3)
+  target_link_libraries(main PRIVATE sqlpp11::sqlite3)
+
+  find_package(Sqlpp11 CONFIG REQUIRED COMPONENTS MariaDB)
+  target_link_libraries(main PRIVATE sqlpp11::mariadb)
+
+Completed submission of sqlpp11[core,mariadb,sqlite3]:x64-linux@0.64#3 to 1 binary cache(s) in 41.4 ms
+Waiting for 2 remaining binary cache submissions...
+Completed submission of sqlpp11-connector-mysql[core,mariadb]:x64-linux@0.61 to 1 binary cache(s) in 2.42 ms (1/2)
+Completed submission of sqlpp11-connector-sqlite3:x64-linux@0.61 to 1 binary cache(s) in 2.14 ms (2/2)
+All requested installations completed successfully in: 4 min
+-- Running vcpkg install - done
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Found SQLite3: /home/runner/work/github_action_shell/github_action_shell/source/build/vcpkg_installed/x64-linux/include (found version "3.49.1")
+-- Found nlohmann_json: /home/runner/work/github_action_shell/github_action_shell/source/build/vcpkg_installed/x64-linux/share/nlohmann_json/nlohmann_jsonConfig.cmake (found version "3.11.3")
+-- MySQL backend enabled (unofficial::libmariadb::mariadb)
+-- Found asio: /home/runner/work/github_action_shell/github_action_shell/source/build/vcpkg_installed/x64-linux/include
+-- ECSHOP_HTTP_SERVER=crow
+-- Configuring done (248.5s)
+-- Generating done (0.1s)
+-- Build files have been written to: /home/runner/work/github_action_shell/github_action_shell/source/build

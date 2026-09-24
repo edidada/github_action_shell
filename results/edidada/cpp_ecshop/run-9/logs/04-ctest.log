@@ -1,0 +1,10 @@
+Internal ctest changing into directory: /home/runner/work/github_action_shell/github_action_shell/source/build
+Test project /home/runner/work/github_action_shell/github_action_shell/source/build
+    Start 1: get_goods_use_case_test
+1/2 Test #1: get_goods_use_case_test ..........   Passed    0.00 sec
+    Start 2: goods_api_test
+2/2 Test #2: goods_api_test ...................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Total Test time (real) =   0.20 sec
