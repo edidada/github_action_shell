@@ -1,0 +1,6 @@
+{
+  "repository": {"archived":false,"created_at":"2026-09-17T23:44:46Z","default_branch":"main","description":null,"forks":0,"full_name":"edidada/cpp_ecshop","html_url":"https://github.com/edidada/cpp_ecshop","language":"C++","license":"none","open_issues":0,"private":true,"pushed_at":"2026-09-24T13:55:25Z","size_kb":8042,"stargazers":0,"updated_at":"2026-09-19T15:56:10Z"},
+  "recent_commits": [{"author":"root","date":"2026-09-19T15:12:35Z","message":"Merge #9 into main from work","sha":"2b7790a"},{"author":"somessyy","date":"2026-09-19T15:05:18Z","message":"fix: apply configured log level consistently","sha":"8e43001"},{"author":"somessyy","date":"2026-09-19T14:58:29Z","message":"refactor: unify route error handling","sha":"d440afa"},{"author":"somessyy","date":"2026-09-19T14:45:50Z","message":"add /api/v1/home crow","sha":"0453d6d"},{"author":"somessyy","date":"2026-09-19T14:41:32Z","message":"add /api/v1/home crow","sha":"9a1622c"}],
+  "collected_at": "2026-09-24T15:51:47Z",
+  "billing": "Actions 配额信息不可用（需要 PAT 具备对该账号的 Actions 计费读权限）"
+}
