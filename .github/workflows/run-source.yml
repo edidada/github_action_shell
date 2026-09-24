@@ -141,7 +141,8 @@ jobs:
   # ---------------------------------------------------------------- 执行
   run:
     needs: prepare
-    if: ${{ needs.prepare.outputs.enabled == '1' }}
+    # 调试中：先强制为 true，确认 job 能否被创建
+    if: ${{ true }}
     runs-on: ubuntu-latest
     timeout-minutes: 120
     strategy:
