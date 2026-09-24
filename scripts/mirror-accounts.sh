@@ -30,7 +30,10 @@ if [[ -n "${INPUT_TARGETS:-}" ]]; then
     [[ -n "$t" && "$t" != "$PRIMARY" ]] && targets+=( "$t" )
   done
 else
-  while read -r t; do
+  # 云端走 HTTPS，只需要账号名，忽略 SSH 别名列
+  while read -r entry; do
+    [[ -z "$entry" ]] && continue
+    t="$(account_field "$entry")"
     [[ -n "$t" && "$t" != "$PRIMARY" ]] && targets+=( "$t" )
   done < <(read_accounts)
 fi

@@ -50,6 +50,13 @@ human_ms() {
 }
 
 # ---------------------------------------------------------------- 配置解析
+# 单CAID段提取：account_field "wiseism:wiseism126_github.com" -> wiseism
+account_field() { printf '%s' "${1%%:*}"; }
+# SSH 别名提取：account_host "wiseism:wiseism126_github.com" -> wiseism126_github.com
+#               未指定时回退到 github.com
+account_host() {
+  if [[ "$1" == *:* ]]; then printf '%s' "${1#*:}"; else printf 'github.com'; fi
+}
 # lookup <key> <file>  ->  输出 value；文件为 KEY=VALUE 风格，支持行尾注释
 lookup() {
   local key="$1" file="$2"
@@ -91,8 +98,11 @@ read_accounts() {
   printf '%s' "$out"
 }
 
-primary_account() { read_accounts | head -1; }
-mirror_accounts() { read_accounts | tail -n +2; }
+primary_account() { local l; l="$(read_accounts | head -1)"; account_field "$l"; }
+mirror_accounts() {
+  local l
+  while IFS= read -r l; do [[ -n "$l" ]] && account_field "$l"; done < <(read_accounts | tail -n +2)
+}
 
 # 解析 owner=repo[@ref]
 # usage: resolve_source <owner>  ->  设置全局变量 GAS_SOURCE_REPO / GAS_SOURCE_REF / GAS_SOURCE_FULL

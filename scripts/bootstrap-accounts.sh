@@ -28,8 +28,9 @@ trap '[[ -n "$PREV_ACTIVE" ]] && gh auth switch --user "$PREV_ACTIVE" >/dev/null
 
 GUIDE=()
 
-while read -r acct; do
-  [[ -z "$acct" ]] && continue
+while read -r entry; do
+  [[ -z "$entry" ]] && continue
+  acct="$(account_field "$entry")"
   full="${acct}/${REPO_NAME}"
   log_step "账号 ${acct}"
 
