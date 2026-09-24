@@ -1,0 +1,11 @@
+# shell 脚本必须是 LF，否则 Windows 上 core.autocrlf=true 会导致
+# Linux runner 里出现 ^M 直接报 bad interpreter
+*.sh text eol=lf
+
+# workflow 同理
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# 配置文件
+*.env text eol=lf
+* text=auto eol=lf

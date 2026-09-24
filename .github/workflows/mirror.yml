@@ -1,0 +1,52 @@
+name: mirror-to-accounts
+
+# =====================================================================
+# 把主账号（edidada）下的本仓库单向镜像到其余 GitHub 账号下的同名仓库。
+#
+# 前置条件：
+#   1. 其余账号下已各创建一个空白的 public 仓库（同名：github_action_shell，
+#      创建时不要勾选 README / .gitignore / License）
+#   2. 主仓库配置了 secret: MIRROR_TOKEN
+#      - 经典 PAT，scope 勾选 repo（跨账号写需要）
+#      - 或在每个目标仓库上授予 fine-grained PAT 的 Contents: Read and write
+# =====================================================================
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      targets:
+        description: '要同步的目标账号，逗号分隔；留空则同步 config/accounts.env 中除主账号外的全部'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # 只在主账号仓库执行，镜像仓自身不再向外同步，避免循环
+    if: github.repository_owner == 'edidada'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 检查 MIRROR_TOKEN
+        env:
+          HAS_MIRROR_TOKEN: ${{ secrets.MIRROR_TOKEN != '' }}
+        run: |
+          if [[ "$HAS_MIRROR_TOKEN" != "true" ]]; then
+            echo "::warning::未配置 secret MIRROR_TOKEN，跳过镜像同步"
+            exit 0
+          fi
+
+      - name: 同步到各账号
+        env:
+          MIRROR_TOKEN: ${{ secrets.MIRROR_TOKEN }}
+          INPUT_TARGETS: ${{ github.event.inputs.targets }}
+          PRIMARY: edidada
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: bash scripts/mirror-accounts.sh

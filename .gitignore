@@ -1,0 +1,12 @@
+# 本地临时产物（不应提交）
+out/
+tmp/
+*.local
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 注意：results/ 是刻意提交的归档目录，不要加入忽略列表

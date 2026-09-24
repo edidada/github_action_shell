@@ -1,0 +1,278 @@
+name: run-source
+
+# =====================================================================
+# 在 PUBLIC 仓库的免费 runner 上，拉取并执行 PRIVATE 源仓库的脚本/构建。
+# 三种触发方式全部支持：
+#   1) workflow_dispatch  手动触发（页面按钮或 gh workflow run）
+#   2) schedule           定时触发（默认只在主账号仓库执行，避免多份重复消耗）
+#   3) repository_dispatch 远程派发（私有仓库没 Actions 时长了，可用本地 gh 或 webhook 触发）
+# =====================================================================
+on:
+  workflow_dispatch:
+    inputs:
+      source_repo:
+        description: '私有源仓库名（不含 owner，owner 自动取当前仓库所属账号）'
+        required: false
+        default: ''
+      source_ref:
+        description: '分支 / tag / sha，留空用默认分支'
+        required: false
+        default: ''
+      entrypoint:
+        description: '执行入口脚本（相对源仓库根目录），auto = 自动探测'
+        required: false
+        default: 'auto'
+      profile:
+        description: '构建方式 auto|cmake|make|npm|script|skip'
+        required: false
+        default: 'auto'
+      extra_script:
+        description: '构建后额外执行的脚本（相对源仓库根目录，可选）'
+        required: false
+        default: ''
+      commit_results:
+        description: '是否把结果提交回本仓库'
+        required: false
+        type: boolean
+        default: true
+  repository_dispatch:
+    types: [run-source-script]
+  schedule:
+    # UTC 时间；换算北京时间 +8h。默认每天 02:23 UTC = 10:23 CST
+    - cron: '23 2 * * *'
+
+permissions:
+  contents: write
+
+# 同一 ref 上排队执行，不中断正在跑的任务
+concurrency:
+  group: gas-run-source-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  # 主账号：只有它的仓库会在定时任务里自动执行，并负责提交归档
+  GAS_PRIMARY_OWNER: edidada
+  GAS_ROOT: ${{ github.workspace }}
+
+jobs:
+  # ---------------------------------------------------------------- 准备
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      enabled: ${{ steps.resolve.outputs.enabled }}
+      reason: ${{ steps.resolve.outputs.reason }}
+      source_full: ${{ steps.resolve.outputs.source_full }}
+      source_repo: ${{ steps.resolve.outputs.source_repo }}
+      source_ref: ${{ steps.resolve.outputs.source_ref }}
+      has_token: ${{ steps.resolve.outputs.has_token }}
+      variants: ${{ steps.resolve.outputs.variants }}
+      is_primary: ${{ steps.resolve.outputs.is_primary }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 解析目标私有仓库与运行条件
+        id: resolve
+        env:
+          REPO_OWNER: ${{ github.repository_owner }}
+          INPUT_SOURCE_REPO: ${{ github.event.inputs.source_repo }}
+          INPUT_SOURCE_REF: ${{ github.event.inputs.source_ref }}
+          INPUT_PROFILE: ${{ github.event.inputs.profile }}
+          CLIENT_PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+          EVENT_NAME: ${{ github.event_name }}
+          GAS_PRIMARY_OWNER: ${{ env.GAS_PRIMARY_OWNER }}
+          VARIANTS: ${{ vars.VARIANTS }}
+          HAS_TOKEN: ${{ secrets.SOURCE_REPO_TOKEN != '' }}
+          SOURCE_REPO_FALLBACK: ${{ vars.SOURCE_REPO }}
+        run: |
+          set -euo pipefail
+          # shell 里通过环境变量引用，避免表达式直接注入造成语法注入
+          owner="$REPO_OWNER"
+          has_token="$HAS_TOKEN"
+
+          is_primary="false"
+          [[ "$owner" == "$GAS_PRIMARY_OWNER" ]] && is_primary="true"
+
+          # 优先级：手动 input > dispatch payload > 仓库变量 > 内置默认
+          repo="${INPUT_SOURCE_REPO}"
+          ref="${INPUT_SOURCE_REF}"
+          if [[ -z "$repo" && "$EVENT_NAME" == "repository_dispatch" ]]; then
+            repo="$(printf '%s' "$CLIENT_PAYLOAD" | jq -r '.source_repo // empty')"
+            ref="$(printf '%s' "$CLIENT_PAYLOAD" | jq -r '.source_ref // empty')"
+          fi
+          repo="${repo:-${SOURCE_REPO_FALLBACK}}"
+          repo="${repo:-cpp_ecshop}"
+
+          ref="${ref:-$(grep -E "^${owner}=" config/sources.env | head -1 | cut -d= -f2 | tr -d ' ')}"
+          full="${owner}/${repo}"
+
+          # 构建变体矩阵（允许多套 cmake 参数，例如 crow / httplib 两种后端）
+          variants="${VARIANTS:-}"
+          if [[ -z "$variants" ]]; then
+            variants='[{ "name": "default", "extra": "" }]'
+          fi
+
+          enabled="true"; reason=""
+          if [[ "$has_token" != "true" ]]; then
+            enabled="false"; reason="未配置 secret SOURCE_REPO_TOKEN，跳过（每个账号需各自配置能读自己私有仓库的 PAT）"
+          elif [[ "$EVENT_NAME" == "schedule" && "$is_primary" != "true" ]]; then
+            enabled="false"; reason="定时任务只在主账号仓库(${GAS_PRIMARY_OWNER})执行，镜像仓避免重复消耗"
+          fi
+
+          {
+            echo "enabled=$enabled"
+            echo "reason=$reason"
+            echo "source_full=$full"
+            echo "source_repo=$repo"
+            echo "source_ref=$ref"
+            echo "has_token=$has_token"
+            echo "variants=$variants"
+            echo "is_primary=$is_primary"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "::notice::目标源仓库 $full ${ref:+@ $ref} / enabled=$enabled ${reason:+($reason)}"
+
+  # ---------------------------------------------------------------- 执行
+  run:
+    needs: prepare
+    if: needs.prepare.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.variants) }}
+    env:
+      SOURCE_REPO_TOKEN: ${{ secrets.SOURCE_REPO_TOKEN }}
+      GH_TOKEN: ${{ secrets.SOURCE_REPO_TOKEN }}
+      GAS_SOURCE_FULL: ${{ needs.prepare.outputs.source_full }}
+      GAS_SOURCE_REPO: ${{ needs.prepare.outputs.source_repo }}
+      GAS_CMAKE_EXTRA: ${{ matrix.extra }}
+    outputs:
+      status: ${{ steps.final.outputs.status }}
+    steps:
+      - name: Checkout 驱动仓库（本仓库）
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout 私有源仓库
+        id: src
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ needs.prepare.outputs.source_full }}
+          ref: ${{ needs.prepare.outputs.source_ref }}
+          token: ${{ secrets.SOURCE_REPO_TOKEN }}
+          path: source
+          fetch-depth: 1
+          persist-credentials: false   # 关键：不把 PAT 写进 .git/config 残留给后续步骤
+
+      - name: 记录源仓库 commit
+        id: sha
+        working-directory: source
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout vcpkg（源仓库声明了 vcpkg.json 时）
+        if: hashFiles('source/vcpkg.json') != ''
+        uses: actions/checkout@v4
+        with:
+          repository: microsoft/vcpkg
+          path: source/.vcpkg
+          fetch-depth: 1
+
+      - name: ccache 缓存
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ccache
+          key: ccache-${{ github.run_id }}-${{ matrix.name }}
+          restore-keys: ccache-${{ matrix.name }}-
+
+      - name: 探测构建方式
+        id: probe
+        env:
+          GAS_PROFILE: ${{ github.event.inputs.profile }}
+          GAS_ENTRYPOINT: ${{ github.event.inputs.entrypoint }}
+        run: bash scripts/discover.sh "${{ github.workspace }}/source"
+
+      - name: 执行源仓库构建 / 脚本
+        id: exec
+        env:
+          GAS_PROFILE: ${{ github.event.inputs.profile }}
+          GAS_ENTRYPOINT: ${{ github.event.inputs.entrypoint }}
+          GAS_EXTRA_SCRIPT: ${{ github.event.inputs.extra_script }}
+          GAS_SOURCE_SHA: ${{ steps.sha.outputs.sha }}
+          GAS_BUILD_TYPE: Release
+          GAS_ENABLE_VCPKG: ${{ vars.ENABLE_VCPKG }}
+        continue-on-error: true
+        run: |
+          bash scripts/run-source.sh \
+            "${{ github.workspace }}/source" \
+            "${{ github.workspace }}/out" \
+            "${{ steps.probe.outputs.profile }}" \
+            "${{ steps.probe.outputs.entrypoint }}"
+
+      - name: 用 gh 采集源仓库信息
+        env:
+          GAS_SOURCE_SHA: ${{ steps.sha.outputs.sha }}
+        continue-on-error: true
+        run: bash scripts/collect-repo-info.sh "${{ needs.prepare.outputs.source_full }}" "${{ github.workspace }}/out"
+
+      - name: 生成报告
+        id: report
+        env:
+          GAS_SOURCE_FULL: ${{ needs.prepare.outputs.source_full }}
+          GAS_SOURCE_REF: ${{ needs.prepare.outputs.source_ref }}
+          GAS_SOURCE_SHA: ${{ steps.sha.outputs.sha }}
+          GAS_PROFILE: ${{ steps.probe.outputs.profile }}
+        run: bash scripts/gen-report.sh "${{ github.workspace }}/out"
+
+      - name: 写入 Job Summary
+        if: always()
+        run: cat "${{ github.workspace }}/out/summary.md" >> "$GITHUB_STEP_SUMMARY" || true
+
+      - name: 上传执行结果产物
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: result-${{ needs.prepare.outputs.source_repo }}-${{ matrix.name }}-${{ github.run_number }}
+          path: out/
+          retention-days: 90
+
+      - name: 归档结果回本仓库
+        if: always() && github.event.inputs.commit_results != 'false'
+        env:
+          ARCHIVE_DIR: results/${{ github.repository_owner }}/${{ needs.prepare.outputs.source_repo }}/${{ matrix.name }}
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p "$ARCHIVE_DIR/run-${{ github.run_number }}"
+          rm -rf "$ARCHIVE_DIR/run-${{ github.run_number }}"
+          cp -r out "$ARCHIVE_DIR/run-${{ github.run_number }}"
+
+          # 每次同步 Pull 防止多账号镜像推送导致历史分叉
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "${{ github.ref_name }}" && break
+            sleep $((i * 5))
+          done
+          git add "$ARCHIVE_DIR"
+          if git diff --cached --quiet; then
+            echo "没有需要提交的变化"
+          else
+            git commit -m "chore(results): ${{ needs.prepare.outputs.source_full }}@${{ needs.prepare.outputs.source_ref }} run #${{ github.run_number }} / ${{ matrix.name }}"
+            for i in 1 2 3; do
+              git push origin "HEAD:${{ github.ref_name }}" && break
+              sleep $((i * 5))
+              git pull --rebase --autostash origin "${{ github.ref_name }}"
+            done
+          fi
+
+      - name: 决定最终状态
+        id: final
+        if: always()
+        run: |
+          st="$(cat out/status 2>/dev/null || echo unknown)"
+          echo "status=$st" >> "$GITHUB_OUTPUT"
+          if [[ "$st" == "failure" ]]; then
+            echo "::error::源仓库执行失败，详见 Job Summary 与归档结果"
+            exit 1
+          fi
