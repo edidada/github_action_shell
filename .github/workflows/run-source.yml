@@ -144,9 +144,11 @@ jobs:
     timeout-minutes: 120
     strategy:
       fail-fast: false
-      # matrix 直接读仓库变量，不依赖 job outputs：
-      # 从 outputs 拿 JSON 时一旦为空会静默导致 job 不被创建（run 直接判失败）
-      matrix: ${{ fromJSON(vars.VARIANTS || '[{"name":"default","extra":""}]') }}
+      # 构建变体。需要多套参数（例如 crow / httplib 两种后端）时直接改这里：
+      #   matrix: ${{ fromJSON('[{"name":"crow","extra":"-DECSHOP_HTTP_SERVER=crow"},{"name":"httplib","extra":"-DECSHOP_HTTP_SERVER=httplib"}]') }}
+      # 注意：这里不要引用 vars.* / needs.*，表达式一旦求值为空，
+      # GitHub 会静默跳过整个 job 的创建（run 直接判失败，且不报错）。
+      matrix: ${{ fromJSON('[{"name":"default","extra":""}]') }}
     env:
       SOURCE_REPO_TOKEN: ${{ secrets.SOURCE_REPO_TOKEN }}
       GH_TOKEN: ${{ secrets.SOURCE_REPO_TOKEN }}
