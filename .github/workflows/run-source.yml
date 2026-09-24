@@ -45,8 +45,10 @@ permissions:
   contents: write
 
 # 同一 ref 上排队执行，不中断正在跑的任务
+# 注意：concurrency 组在 job 级别生效，若 group 被前一个 job 占用会阻塞下游 job，
+# 排查「job 未被创建」问题时可以先临时注释掉这段。
 concurrency:
-  group: gas-run-source-${{ github.ref }}
+  group: gas-run-source-${{ github.ref }}-${{ github.run_id }}
   cancel-in-progress: false
 
 env:
@@ -139,7 +141,7 @@ jobs:
   # ---------------------------------------------------------------- 执行
   run:
     needs: prepare
-    if: needs.prepare.outputs.enabled == '1'
+    if: ${{ needs.prepare.outputs.enabled == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 120
     strategy:
