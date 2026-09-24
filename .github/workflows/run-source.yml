@@ -141,23 +141,17 @@ jobs:
   # ---------------------------------------------------------------- 执行
   run:
     needs: prepare
-    # 调试中：先强制为 true，确认 job 能否被创建
-    if: ${{ true }}
+    if: needs.prepare.outputs.enabled == '1'
     runs-on: ubuntu-latest
     timeout-minutes: 120
-    strategy:
-      fail-fast: false
-      # 构建变体。需要多套参数（例如 crow / httplib 两种后端）时直接改这里：
-      #   matrix: ${{ fromJSON('[{"name":"crow","extra":"-DECSHOP_HTTP_SERVER=crow"},{"name":"httplib","extra":"-DECSHOP_HTTP_SERVER=httplib"}]') }}
-      # 注意：这里不要引用 vars.* / needs.*，表达式一旦求值为空，
-      # GitHub 会静默跳过整个 job 的创建（run 直接判失败，且不报错）。
-      matrix: ${{ fromJSON('[{"name":"default","extra":""}]') }}
     env:
       SOURCE_REPO_TOKEN: ${{ secrets.SOURCE_REPO_TOKEN }}
       GH_TOKEN: ${{ secrets.SOURCE_REPO_TOKEN }}
       GAS_SOURCE_FULL: ${{ needs.prepare.outputs.source_full }}
       GAS_SOURCE_REPO: ${{ needs.prepare.outputs.source_repo }}
-      GAS_CMAKE_EXTRA: ${{ matrix.extra }}
+      # 需要多套构建参数（例如 crow / httplib）时设仓库变量 CMAKE_EXTRA，
+      # 或改成 strategy.matrix 展开（注意 matrix 值不要留空字符串）
+      GAS_CMAKE_EXTRA: ${{ vars.CMAKE_EXTRA }}
     outputs:
       status: ${{ steps.final.outputs.status }}
     steps:
@@ -194,8 +188,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ccache
-          key: ccache-${{ github.run_id }}-${{ matrix.name }}
-          restore-keys: ccache-${{ matrix.name }}-
+          key: ccache-${{ github.run_id }}
+          restore-keys: ccache-
 
       - name: 探测构建方式
         id: probe
@@ -244,14 +238,14 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: result-${{ needs.prepare.outputs.source_repo }}-${{ matrix.name }}-${{ github.run_number }}
+          name: result-${{ needs.prepare.outputs.source_repo }}-${{ github.run_number }}
           path: out/
           retention-days: 90
 
       - name: 归档结果回本仓库
         if: always() && github.event.inputs.commit_results != 'false'
         env:
-          ARCHIVE_DIR: results/${{ github.repository_owner }}/${{ needs.prepare.outputs.source_repo }}/${{ matrix.name }}
+          ARCHIVE_DIR: results/${{ github.repository_owner }}/${{ needs.prepare.outputs.source_repo }}
         run: |
           set -euo pipefail
           git config user.name  "github-actions[bot]"
@@ -269,7 +263,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "没有需要提交的变化"
           else
-            git commit -m "chore(results): ${{ needs.prepare.outputs.source_full }}@${{ needs.prepare.outputs.source_ref }} run #${{ github.run_number }} / ${{ matrix.name }}"
+            git commit -m "chore(results): ${{ needs.prepare.outputs.source_full }}@${{ needs.prepare.outputs.source_ref }} run #${{ github.run_number }}"
             for i in 1 2 3; do
               git push origin "HEAD:${{ github.ref_name }}" && break
               sleep $((i * 5))
