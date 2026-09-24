@@ -14,15 +14,20 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
 need_cmd git
 
-DRY_RUN=0; ALL_BRANCHES=0; USE_HTTPS=0
+DRY_RUN=0; ALL_BRANCHES=0; USE_HTTPS=0; FORCE=0
 for a in "$@"; do
   case "$a" in
     --dry-run)      DRY_RUN=1 ;;
     --all-branches) ALL_BRANCHES=1 ;;
     --https)        USE_HTTPS=1 ;;
+    --force)        FORCE=1 ;;
     *) log_warn "未知参数: $a" ;;
   esac
 done
+
+# 主仓上 CI 会自行提交 results/ 归档，镜像仓没有这些提交，
+# 因此单向同步镜像仓时需要 --force（镜像仓本就是只读副本，不存在覆盖他人改动的风险）
+(( FORCE )) && PUSH_FORCE=( --force ) || PUSH_FORCE=()
 
 REPO_NAME="${REPO_NAME:-$(basename "$GAS_ROOT")}"
 BRANCH="${BRANCH:-$(git -C "$GAS_ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null || echo main)}"
@@ -64,7 +69,7 @@ while read -r entry; do
       || log_warn "  无法切换 gh 到 ${acct}，沿用当前凭证"
   fi
 
-  if git -C "$GAS_ROOT" push "$acct" "${PUSH_SPEC[@]}"; then
+  if git -C "$GAS_ROOT" push "${PUSH_FORCE[@]}" "$acct" "${PUSH_SPEC[@]}"; then
     log_ok "  ✓ ${acct} 完成"
   else
     failed=1

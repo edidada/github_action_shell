@@ -3,6 +3,11 @@ out/
 tmp/
 *.local
 
+# 备份脚本的临时镜像目录与 Python 缓存
+.backup-tmp/
+__pycache__/
+*.pyc
+
 # 编辑器 / 系统
 .vscode/
 .idea/
