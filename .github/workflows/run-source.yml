@@ -112,11 +112,14 @@ jobs:
             variants='[{ "name": "default", "extra": "" }]'
           fi
 
-          enabled="true"; reason=""
+          # 用 1/0 而不是 true/false：GitHub 表达式会把 output 里的 "true"/"false"
+          # 当成布尔值与字符串做比较时触发隐式类型转换（1 == NaN -> false），
+          # 用数字字符串可以彻底绕开这个坑。
+          enabled=1; reason=""
           if [[ "$has_token" != "true" ]]; then
-            enabled="false"; reason="未配置 secret SOURCE_REPO_TOKEN，跳过（每个账号需各自配置能读自己私有仓库的 PAT）"
+            enabled=0; reason="未配置 secret SOURCE_REPO_TOKEN，跳过（每个账号需各自配置能读自己私有仓库的 PAT）"
           elif [[ "$EVENT_NAME" == "schedule" && "$is_primary" != "true" ]]; then
-            enabled="false"; reason="定时任务只在主账号仓库(${GAS_PRIMARY_OWNER})执行，镜像仓避免重复消耗"
+            enabled=0; reason="定时任务只在主账号仓库(${GAS_PRIMARY_OWNER})执行，镜像仓避免重复消耗"
           fi
 
           {
@@ -131,16 +134,19 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
           echo "::notice::目标源仓库 $full ${ref:+@ $ref} / enabled=$enabled ${reason:+($reason)}"
+          echo "::notice::variants=$variants"
 
   # ---------------------------------------------------------------- 执行
   run:
     needs: prepare
-    if: needs.prepare.outputs.enabled == 'true'
+    if: needs.prepare.outputs.enabled == '1'
     runs-on: ubuntu-latest
     timeout-minutes: 120
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.prepare.outputs.variants) }}
+      # matrix 直接读仓库变量，不依赖 job outputs：
+      # 从 outputs 拿 JSON 时一旦为空会静默导致 job 不被创建（run 直接判失败）
+      matrix: ${{ fromJSON(vars.VARIANTS || '[{"name":"default","extra":""}]') }}
     env:
       SOURCE_REPO_TOKEN: ${{ secrets.SOURCE_REPO_TOKEN }}
       GH_TOKEN: ${{ secrets.SOURCE_REPO_TOKEN }}
